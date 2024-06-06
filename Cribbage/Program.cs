@@ -1,6 +1,13 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Models;
 
-app.MapGet("/", () => "Hello World!");
+namespace ProgramNamespace
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Cribbage.MainLoop();
+        }
 
-app.Run();
+    }
+}
