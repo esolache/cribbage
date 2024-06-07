@@ -1,19 +1,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using Util;
 namespace Models {
     class CribbageHand : CribbageDeck {
 
         public PokerCard? Pull {get; set;}
-
-        private int sum;
-        public int Sum {get {
-            this.sum = 0;
-            foreach (PokerCard card in this.Cards) {
-                this.sum += card.PointValue;
-            }
-            return this.sum;
-        }}  
         private int points;
         public int Points {get {
             this.points = 0;
@@ -26,120 +18,80 @@ namespace Models {
             
             foreach (PokerCard card in this.Cards) {
                 temp.Add(card);
+
+                // Count Nobs
+                if (this.Pull != null 
+                    && card.CardValue == CardValue.Jack 
+                    && card.Suit == this.Pull.Suit) {
+                    this.points++;
+                }
             }
 
             temp = temp.OrderBy(o=>o.CardValue).ToList();;
 
-            for (int i = 0; i < temp.Count; i++) {
-                bool isFlushOfFive = false;
-                bool isFlushOfFour = false;
+            List<List<PokerCard>> allCardCombinations = CribbageHand.GetAllCardCombinations(temp);
+            allCardCombinations = allCardCombinations.OrderByDescending(o=>o.Count).ToList();;
 
-                bool isRunOfFive = false;
-                bool isRunOfFour = false;
-                bool isRunOfThree = false;
+            bool isFlushOfFive = false;
+            bool noFlushOfFive = true;
+
+            bool isFlushOfFour = false;
+
+            bool isRunOfFive = false;
+            bool noRunOfFive = true;
+
+            bool isRunOfFour = false;
+            bool noRunOfFour = true;
+            
+            bool isRunOfThree = false;
 
 
-                    bool isNobs = this.Pull != null
-                            && temp[i].CardValue == CardValue.Jack 
-                            && temp[i].Suit == this.Pull.Suit;
-                
-                // Count Nobs
-                if (isNobs) {
-                    this.points +=1;
+            foreach (List<PokerCard> currCombo in allCardCombinations) {
+                bool isDouble = false;
+                bool isFifteen = CribbagePoints.IsFifteen(currCombo);
+
+                if (currCombo.Count == 5) {
+                    isFlushOfFive = CribbagePoints.IsRunOfFive(currCombo);
+                    isRunOfFive = CribbagePoints.IsRunOfFive(currCombo);
+                }
+                if (currCombo.Count == 4) {
+                    isRunOfFour = CribbagePoints.IsRunOfFour(currCombo);
+                    isFlushOfFour = CribbagePoints.IsFlushOfFour(currCombo);
+                }
+                if (currCombo.Count == 3) {
+                    isRunOfThree = CribbagePoints.IsRunOfThree(currCombo);
+                }
+                if (currCombo.Count == 2) {
+                    isDouble = CribbagePoints.IsDouble(currCombo);
                 }
 
-                for (int j = i+1; j < temp.Count; j++ ) {
-                    bool isDouble = temp[i].CardValue == temp[j].CardValue;
-                    bool isFifteenDouble = temp[i].PointValue + temp[j].PointValue == 15;
-                    
-                    // Count Sets of 2 == 15s
-                    if (isFifteenDouble) {
-                        this.points += 2;
-                    }
-
-                    // Count Doubles
-                    if (isDouble) {
-                        this.points += 2;
-                    }
-
-
-                    for (int k = j+1; k < temp.Count; k++) {
-                    
-                    isRunOfThree = CribbageHand.IsRunOfThree(temp,i,j,k);
-                        
-
-                    bool isFifteenTriple = temp[i].PointValue 
-                                            + temp[j].PointValue 
-                                            + temp[k].PointValue == 15;
-
-                        if (isFifteenTriple) {
-                            points += 2;
-                        }
-
-                        for (int l = k+1; l < temp.Count; l++) {
-                            isFlushOfFour = CribbageHand.IsFlushOfFour(temp, i,j,k,l);
-
-                            isRunOfFour = CribbageHand.IsRunOfFour(temp, i,j,k,l);
-
-
-                            bool isFifteenQuadruple = temp[i].PointValue 
-                                            + temp[j].PointValue 
-                                            + temp[k].PointValue 
-                                            + temp[l].PointValue == 15;
-                                            
-                            if (isFifteenQuadruple) {
-                                points += 2;
-                            }
-                            for (int m = l+1; m < temp.Count; m++) {
-                                isRunOfFive = CribbageHand.IsRunOfFive(temp, i,j,k,l,m);
-                                
-                                isFlushOfFive = CribbageHand.IsFlushOfFive(temp, i,j,k,l,m);
-
-                                bool isFifteenQuintuple = temp[i].PointValue 
-                                                + temp[j].PointValue 
-                                                + temp[k].PointValue 
-                                                + temp[l].PointValue == 15;
-                                                
-                                if (isFifteenQuintuple) {
-                                    this.points += 2;
-                                }
-
-                                
-                                
-                            }
-                            if (isRunOfFive) {
-                                    this.points += 5;
-                                    isRunOfFive = false;
-                                    isRunOfFour = false;
-                                    isRunOfThree = false;
-                                }
-
-                            if (isFlushOfFive) {
-                                this.points += 5;
-                                isFlushOfFive = false;
-                                isFlushOfFour = false;
-                            }
-
-                            
-
-                        }
-                        if (isRunOfFour) {
-                                this.points += 4;
-                                isRunOfFour = false;
-                                isRunOfThree = false;
-                            }
-
-                            if (isFlushOfFour) {
-                                isFlushOfFour = false;
-                                this.points += 4;
-                            }
-                        
-                    }
-                    if (isRunOfThree) {
-                            isRunOfThree = false;
-                            this.points += 3;
-                        }
+                if (isFlushOfFive) {
+                    this.points += 5;
+                    noFlushOfFive = false;
                 }
+                else if (isFlushOfFour && noFlushOfFive) {
+                    this.points += 4;
+                }
+
+                if (isRunOfFive) {
+                    this.points += 5;
+                    noRunOfFive = false;
+                }
+                else if (isRunOfFour && noRunOfFive) {
+                    this.points +=4;
+                    noRunOfFour = false;
+                }
+                else if (isRunOfThree && noRunOfFour) {
+                    this.points += 3;
+                }
+
+                if (isDouble) {
+                    this.points += 2;
+                }
+                if (isFifteen) {
+                    this.points += 2;
+                }
+
             }
 
             return this.points;
@@ -177,107 +129,6 @@ namespace Models {
             "Hand:\n" + base.ToString();
         }
 
-        public static bool IsRunOfFive(List<PokerCard> temp, int i, int j, int k, int l, int m) {
-            bool result =  (int) temp[i].CardValue == (int) temp[j].CardValue - 1
-                        && (int) temp[j].CardValue == (int) temp[k].CardValue - 1
-                        && (int) temp[k].CardValue == (int) temp[l].CardValue - 1
-                        && (int) temp[l].CardValue == (int) temp[m].CardValue - 1;
-
-
-            if (result) {
-                // Console.WriteLine("\nRun of Five\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", m, temp[m].ToString()));
-            }
-
-
-
-
-            return result;
-        }
-
-        public static bool IsRunOfFour(List<PokerCard> temp, int i, int j, int k, int l) {
-            bool result = (int) temp[i].CardValue == (int) temp[j].CardValue - 1
-            && (int) temp[j].CardValue == (int) temp[k].CardValue - 1
-            && (int) temp[k].CardValue == (int) temp[l].CardValue - 1;
-
-            
-            if (result) {
-                // Console.WriteLine("\nRun of Four\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
-            }
-            
-
-
-            return result;
-        }
-
-        public static bool IsRunOfThree(List<PokerCard> temp, int i, int j, int k) {
-            bool result = (int) temp[i].CardValue == (int) temp[j].CardValue - 1
-            && (int) temp[j].CardValue == (int) temp[k].CardValue - 1;
-
-            
-            
-            if (result) {
-                // Console.WriteLine("\nRun of Three\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-
-            }
-
-            return result;
-        }
-
-        public static bool IsFlushOfFive(List<PokerCard> temp, int i, int j, int k, int l, int m) {
-            bool result = temp[i].Suit == temp[j].Suit
-            && temp[j].Suit == temp[k].Suit
-            && temp[k].Suit == temp[l].Suit
-            && temp[l].Suit == temp[m].Suit;
-
-            if (result) {
-                // Console.WriteLine("\nFlush of Five\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", m, temp[m].ToString()));
-
-            }
-
-
-            return result;
-        }
-
-        public static bool IsFlushOfFour(List<PokerCard> temp, int i, int j, int k, int l) {
-            bool result = temp[i].Suit == temp[j].Suit
-            && temp[j].Suit == temp[k].Suit
-            && temp[k].Suit == temp[l].Suit;
-
-            if (result) {
-                // Console.WriteLine("\nFlush of Four\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
-
-            }
-            
-
-            return result;
-        }
-
         public List<PokerCard> GetCopyCardsInHand()
         {
             List<PokerCard> result = new List<PokerCard>();
@@ -288,6 +139,51 @@ namespace Models {
 
             return result;
         }
+
+        public static List<List<PokerCard>> GetAllCardCombinations(List<PokerCard> temp) { 
+            List<List<PokerCard>> result = new List<List<PokerCard>>();
+
+            if (temp.Count < 2) {
+                result.Add(temp);
+                return result;
+            }
+
+            int count = (int) Math.Pow(2, temp.Count);
+            for (int i = 1; i <= count - 1; i++)
+            {
+                List<PokerCard> currList = new List<PokerCard>();
+                string str = Convert.ToString(i, 2).PadLeft(temp.Count, '0');
+                for (int j = 0; j < str.Length; j++)
+                {
+                    if (str[j] == '1')
+                    {
+                        currList.Add(temp[j]);
+                    }
+                }
+
+                if (currList.Count > 1) {
+                    result.Add(currList);
+                }
+            }
+
+            return result;
+        }
+
+        // what if we check first the combination of 5
+        // if combination of 5 is run or flush
+        // we negate any run or flush combos of 4
+        // 15s are still ok to check
+
+        // then we check all combinations of 4
+        // if combination of 4 is run
+        // then we negate any run combos of 3
+        // 15s are still ok to check
+
+        // then we check all the combinations of 3
+        // check for 15s and runs
+
+        // independently check all the combinations of 2
+        // for 15s and doubles
 
     }
 }

@@ -137,13 +137,16 @@ namespace ProgramNamespace
         }
 
         public static void TallyPoints(ref CribbageGame game) {
+            int points = 0;
             foreach (CribbagePlayer player in game.Players) {
-                Console.WriteLine("{0} Hand Worth {1} Points", player.Name, player.Hand.Points);
-                player.Points += player.Hand.Points;
+                points = player.Hand.Points;
+                Console.WriteLine("{0} Hand Worth {1} Points", player.Name, points);
+                player.Points += points;
             }
 
-            Console.WriteLine("Crib Worth {0} Points", game.Crib.Points);
-            game.Dealer.Points += game.Crib.Points;
+            points = game.Crib.Points;
+            Console.WriteLine("Crib Worth {0} Points", points);
+            game.Dealer.Points += points;
             
             return;
         }

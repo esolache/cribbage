@@ -1,6 +1,23 @@
 using Models;
 namespace Util {
     static class CribbagePoints {
+
+        public static bool IsFifteen(List<PokerCard> temp) {
+            bool result = false;
+            int sum = 0;
+
+            foreach (PokerCard card in temp) {
+                sum += card.PointValue;
+            }
+            
+            result = sum == 15;
+
+            if (result) {
+                Console.WriteLine("\n15 for 2!\n");
+            }
+            
+            return result;
+        }
         public static bool IsDouble(List<PokerCard> temp) {
             bool result = temp[0].CardValue == temp[1].CardValue;
             if (result) {
