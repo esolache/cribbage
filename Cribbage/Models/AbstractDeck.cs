@@ -1,6 +1,6 @@
 namespace Models
 {
-    abstract class AbstractDeck {
+    public abstract class AbstractDeck {
         public List<PokerCard> Cards { get; set; }
 
         public AbstractDeck() {

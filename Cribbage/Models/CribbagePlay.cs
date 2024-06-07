@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using Util;
 
 namespace Models {
-    class CribbagePlay : CribbageDeck {
+    public class CribbagePlay : CribbageDeck {
 
         private int sum;
         public int Sum {get {

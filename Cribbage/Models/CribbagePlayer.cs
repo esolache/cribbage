@@ -1,5 +1,5 @@
 namespace Models {
-    class CribbagePlayer {
+    public class CribbagePlayer {
 
         public string Name {get; set;}
         public CribbageHand Hand {get; set;}

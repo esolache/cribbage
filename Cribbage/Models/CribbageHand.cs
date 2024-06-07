@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util;
 namespace Models {
-    class CribbageHand : CribbageDeck {
+    public class CribbageHand : CribbageDeck {
 
         public PokerCard? Pull {get; set;}
         private int points;

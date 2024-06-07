@@ -1,13 +1,13 @@
 namespace Models {
 
-    enum Suit{
+    public enum Suit{
         Heart,
         Club,
         Diamond,
         Spades
     }
 
-    enum CardValue {
+    public enum CardValue {
         Ace = 1,
         Two = 2,
         Three = 3,
@@ -24,7 +24,7 @@ namespace Models {
 
     }
 
-    class PokerCard {
+    public class PokerCard {
 
         public Suit Suit {get;}
         public CardValue CardValue {get;}

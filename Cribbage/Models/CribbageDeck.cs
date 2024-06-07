@@ -1,6 +1,6 @@
 namespace Models
 {
-    class CribbageDeck : AbstractDeck {
+    public class CribbageDeck : AbstractDeck {
         
         public CribbageDeck() : base() {
             

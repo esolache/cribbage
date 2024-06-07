@@ -1,5 +1,5 @@
 namespace Models {
-    class CribbageGame {
+    public class CribbageGame {
 
         public List<CribbagePlayer> Players {get; set;}
         public int NumPlayers { get {

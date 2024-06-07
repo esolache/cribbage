@@ -9,9 +9,9 @@ namespace ProgramNamespace
     {
         public static void MainLoop()
         {
-            CribbagePlayer player1 = new CribbagePlayer("Edwin", false);
-            CribbagePlayer player2 = new CribbagePlayer("Al", false);
-            CribbagePlayer player3 = new CribbagePlayer("Macey", false);
+            CribbagePlayer player1 = new CribbagePlayer("Edwin", true);
+            CribbagePlayer player2 = new CribbagePlayer("Al", true);
+            CribbagePlayer player3 = new CribbagePlayer("Macey", true);
             player1.NextPlayer = player2;
             player2.NextPlayer = player3;
             player3.NextPlayer = player1;
@@ -41,9 +41,10 @@ namespace ProgramNamespace
 
                 Cribbage.PlayLoop(ref game);
 
+                Cribbage.TallyPoints(ref game);
+
                 Console.WriteLine(game.ToString());
 
-                Cribbage.TallyPoints(ref game);
 
                 game.Dealer = game.Dealer.NextPlayer;
                 game.CurrPlayer = game.Dealer.NextPlayer;
