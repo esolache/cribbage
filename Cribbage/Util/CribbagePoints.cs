@@ -1,8 +1,9 @@
+using System.Runtime.InteropServices;
 using Models;
 namespace Util {
     static class CribbagePoints {
 
-        public static bool IsFifteen(List<PokerCard> temp) {
+        public static bool IsFifteen(List<PokerCard> temp, bool print = false) {
             bool result = false;
             int sum = 0;
 
@@ -12,44 +13,45 @@ namespace Util {
             
             result = sum == 15;
 
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\n15 for 2!\n");
             }
             
             return result;
         }
-        public static bool IsDouble(List<PokerCard> temp) {
+        public static bool IsDouble(List<PokerCard> temp, bool print = false) {
             bool result = temp[0].CardValue == temp[1].CardValue;
-            if (result) {
+
+            if (print && result) {
                 Console.WriteLine("\nDouble\n");
             }
             
             return result;
         }
-        public static bool IsTriple(List<PokerCard> temp) {
+        public static bool IsTriple(List<PokerCard> temp, bool print = false) {
             bool result = temp[0].CardValue == temp[1].CardValue
                         && temp[1].CardValue == temp[2].CardValue;
 
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\nTriple\n");
             }
             
             return result;
         }
 
-        public static bool IsQuadruple(List<PokerCard> temp) {
+        public static bool IsQuadruple(List<PokerCard> temp, bool print = false) {
             bool result = temp[0].CardValue == temp[1].CardValue
                         && temp[1].CardValue == temp[2].CardValue
                         && temp[2].CardValue == temp[3].CardValue;
 
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\nQuadruple\n");
             }
             
             return result;
         }
 
-        public static bool IsRunOfFive(List<PokerCard> temp) {
+        public static bool IsRunOfFive(List<PokerCard> temp, bool print = false) {
             temp = temp.OrderBy(o=>o.CardValue).ToList();;
 
             bool result =  (int) temp[0].CardValue == (int) temp[1].CardValue - 1
@@ -58,23 +60,14 @@ namespace Util {
                         && (int) temp[4].CardValue == (int) temp[5].CardValue - 1;
 
 
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\nRun of Five\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", m, temp[m].ToString()));
             }
-
-
-
 
             return result;
         }
 
-        public static bool IsRunOfFour(List<PokerCard> temp) {
+        public static bool IsRunOfFour(List<PokerCard> temp, bool print = false) {
             temp = temp.OrderBy(o=>o.CardValue).ToList();;
 
             bool result = (int) temp[0].CardValue == (int) temp[1].CardValue - 1
@@ -82,13 +75,8 @@ namespace Util {
             && (int) temp[2].CardValue == (int) temp[3].CardValue - 1;
 
             
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\nRun of Four\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
             }
             
 
@@ -96,7 +84,7 @@ namespace Util {
             return result;
         }
 
-        public static bool IsRunOfThree(List<PokerCard> temp) {
+        public static bool IsRunOfThree(List<PokerCard> temp, bool print = false) {
             temp = temp.OrderBy(o=>o.CardValue).ToList();;
 
             bool result = (int) temp[0].CardValue == (int) temp[1].CardValue - 1
@@ -104,52 +92,34 @@ namespace Util {
 
             
             
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\nRun of Three\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-
             }
 
             return result;
         }
 
-        public static bool IsFlushOfFive(List<PokerCard> temp) {
+        public static bool IsFlushOfFive(List<PokerCard> temp, bool print = false) {
             bool result = temp[0].Suit == temp[1].Suit
             && temp[1].Suit == temp[2].Suit
             && temp[2].Suit == temp[3].Suit
             && temp[3].Suit == temp[4].Suit;
 
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\nFlush of Five\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", m, temp[m].ToString()));
-
             }
 
 
             return result;
         }
 
-        public static bool IsFlushOfFour(List<PokerCard> temp) {
+        public static bool IsFlushOfFour(List<PokerCard> temp, bool print = false) {
             bool result = temp[0].Suit == temp[1].Suit
             && temp[1].Suit == temp[2].Suit
             && temp[2].Suit == temp[3].Suit;
 
-            if (result) {
+            if (print && result) {
                 Console.WriteLine("\nFlush of Four\n");
-
-                // Console.WriteLine(String.Format("[{0}]: {1}", i, temp[i].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", j, temp[j].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", k, temp[k].ToString()));
-                // Console.WriteLine(String.Format("[{0}]: {1}", l, temp[l].ToString()));
-
             }
             
 

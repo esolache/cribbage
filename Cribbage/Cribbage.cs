@@ -25,10 +25,6 @@ namespace ProgramNamespace
                 Cribbage.SetUp(ref game);
                 Console.WriteLine(game.PlayerPointsToString());
 
-                // Print Hand
-                Console.WriteLine((game.Players[0].Hand.HandToString()));
-
-
                 // Select Cards to Discard to Crib
                 Cribbage.UserSelectCardForCrib(ref game);
                 Cribbage.UserSelectCardForCrib(ref game);
@@ -86,7 +82,7 @@ namespace ProgramNamespace
 
         public static void PlayLoop(ref CribbageGame game) {
             
-            
+            // Store Original Player Hand
             Dictionary<CribbagePlayer, List<PokerCard>> playerHands = new Dictionary<CribbagePlayer, List<PokerCard>>();
             foreach (CribbagePlayer player in game.Players) {
                 playerHands.Add(player, player.Hand.GetCopyCardsInHand());
@@ -130,8 +126,6 @@ namespace ProgramNamespace
             foreach (CribbagePlayer player in game.Players) {
                 player.Hand.Cards = playerHands[player];
             }
-            //game.Players[0].Hand.Cards = userHand;
-            //game.Players[1].Hand.Cards = computerHand;
 
             return;
         }
@@ -181,7 +175,7 @@ namespace ProgramNamespace
             PokerCard result;
 
             bool isValidPlay = false;
-            Console.WriteLine(player.Hand.HandToString());
+            Console.WriteLine(player.Hand.CardsToString());
             Console.Write("Select Card to Play: ");
 
 
@@ -201,8 +195,8 @@ namespace ProgramNamespace
                 }
                 catch (Exception) {
                     Console.WriteLine("Can't Play that Card.");
-                    Console.WriteLine("Current Play" + game.Players[game.Plays.Count - 1].ToString());
-                    Console.WriteLine("Hand: " + player.Hand.HandToString());
+                    Console.WriteLine("Current Play" + game.GetActivePlay().ToString());
+                    Console.WriteLine("Hand: " + player.Hand.CardsToString());
                     Console.Write("Select Card To Play: ");
                     
                 }
@@ -220,7 +214,7 @@ namespace ProgramNamespace
         public static void UserSelectCardForCrib(ref CribbageGame game) {
             PokerCard result;
 
-            Console.WriteLine("Hand: " + game.Players[0].Hand.HandToString());
+            Console.WriteLine("Hand: " + game.Players[0].Hand.CardsToString());
             Console.Write("Select Cards 0-{0} To Discard: ", game.Players[0].Hand.Cards.Count - 1);
 
 
@@ -238,7 +232,7 @@ namespace ProgramNamespace
                 }
                 catch (Exception) {
                     Console.WriteLine("Please enter a valid number.");
-                    Console.WriteLine("Hand: " + game.Players[0].Hand.HandToString());
+                    Console.WriteLine("Hand: " + game.Players[0].Hand.CardsToString());
                     Console.Write("Select Cards 0-{0} To Discard: ", game.Players[0].Hand.Cards.Count - 1);
 
                 }

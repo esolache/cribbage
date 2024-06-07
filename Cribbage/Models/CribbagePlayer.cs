@@ -18,11 +18,15 @@ namespace Models {
             return;
         }
 
-        public override string ToString()
+        public string PlayerCardsPointsToString() {
+            return "Player: " + this.Name + "\n" + 
+            "Hand:\n" + this.Hand.CardsPointsPullToString();
+        }
+
+        public string PlayerCardsToString()
         {
             return "Player: " + this.Name + "\n" + 
-            "Points: " + this.Points + "\n" + 
-            "Hand:\n" + this.Hand.ToString();
+            "Hand:\n" + this.Hand.CardsToString();
         }
 
 

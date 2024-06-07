@@ -109,7 +109,7 @@ namespace Models {
             this.Pull = card;
         }
 
-        public override string ToString()
+        public string CardsPointsPullToString()
         {
             if (this.Pull == null) {
                 return
@@ -123,7 +123,7 @@ namespace Models {
                 "Hand:\n" + base.ToString();
             
         }
-        public string HandToString()
+        public string CardsToString()
         {
             return 
             "Hand:\n" + base.ToString();

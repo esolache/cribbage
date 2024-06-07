@@ -44,20 +44,20 @@ namespace Models {
             }
 
             if (numCards > 4) {
-                isFlushOfFive = CribbagePoints.IsRunOfFive(this.Cards[(numCards-5)..(numCards)]);
-                isRunOfFive = CribbagePoints.IsRunOfFive(this.Cards[(numCards-5)..(numCards)]);
+                isFlushOfFive = CribbagePoints.IsRunOfFive(this.Cards[(numCards-5)..(numCards)], true);
+                isRunOfFive = CribbagePoints.IsRunOfFive(this.Cards[(numCards-5)..(numCards)], true);
             }
             if (numCards > 3) {
-                isRunOfFour = CribbagePoints.IsRunOfFour(this.Cards[(numCards-4)..(numCards)]);
-                isFlushOfFour = CribbagePoints.IsFlushOfFour(this.Cards[(numCards-4)..(numCards)]);
-                isQuadruple = CribbagePoints.IsQuadruple(this.Cards[(numCards-4)..(numCards)]);
+                isRunOfFour = CribbagePoints.IsRunOfFour(this.Cards[(numCards-4)..(numCards)], true);
+                isFlushOfFour = CribbagePoints.IsFlushOfFour(this.Cards[(numCards-4)..(numCards)], true);
+                isQuadruple = CribbagePoints.IsQuadruple(this.Cards[(numCards-4)..(numCards)], true);
             }
             if (numCards > 2) {
-                isRunOfThree = CribbagePoints.IsRunOfThree(this.Cards[(numCards-3)..(numCards)]);
-                isTriple = CribbagePoints.IsTriple(this.Cards[(numCards-3)..(numCards)]);
+                isRunOfThree = CribbagePoints.IsRunOfThree(this.Cards[(numCards-3)..(numCards)], true);
+                isTriple = CribbagePoints.IsTriple(this.Cards[(numCards-3)..(numCards)], true);
             }
             if (numCards > 1) {
-                isDouble = CribbagePoints.IsDouble(this.Cards[(numCards-2)..(numCards)]);
+                isDouble = CribbagePoints.IsDouble(this.Cards[(numCards-2)..(numCards)], true);
             }
 
             if (isFlushOfFive) {

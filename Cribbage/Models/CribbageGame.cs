@@ -99,10 +99,10 @@ namespace Models {
                 result += "Pull: " + this.Pull.ToString() + "\n";
             }
             foreach (CribbagePlayer player in Players) {
-                result += player.ToString() + "\n";
+                result += player.PlayerCardsPointsToString() + "\n";
             }
 
-            result += "Crib:\n" + this.Crib.ToString();
+            result += "Crib:\n" + this.Crib.CardsPointsPullToString();
 
             return result;
         }
