@@ -9,8 +9,6 @@ namespace ProgramNamespace
     {
         public static void MainLoop()
         {
-            // BUG: when multiple non-computer players
-            // discard to crib is broken
             CribbagePlayer player1 = new CribbagePlayer("Edwin", false);
             CribbagePlayer player2 = new CribbagePlayer("Al", false);
             CribbagePlayer player3 = new CribbagePlayer("Macey", false);
@@ -116,7 +114,7 @@ namespace ProgramNamespace
                         }
                     }
                     else {
-                        // BUG: Go is kind of messed up
+                        // BUG: Go is kind of messed upd
                         Console.WriteLine("Go! " + currPlayer.Name);
                     }
 
@@ -243,8 +241,8 @@ namespace ProgramNamespace
         public static void UserSelectCardForCrib(ref CribbageGame game, ref CribbagePlayer player) {
             PokerCard result;
 
-            Console.WriteLine("Hand: " + game.Players[0].Hand.CardsToString());
-            Console.Write("Select Cards 0-{0} To Discard: ", game.Players[0].Hand.Cards.Count - 1);
+            Console.WriteLine("Hand: " + player.Hand.CardsToString());
+            Console.Write("Select Cards 0-{0} To Discard: ", player.Hand.Cards.Count - 1);
 
 
             int userInParsed = -1;
@@ -254,15 +252,15 @@ namespace ProgramNamespace
                     var userIn = Console.ReadLine();
                     Int32.TryParse(userIn, out userInParsed);
 
-                    result = game.Players[0].Hand.Cards[userInParsed];
+                    result = player.Hand.Cards[userInParsed];
 
                     game.AddCardToCrib(result);
 
                 }
                 catch (Exception) {
                     Console.WriteLine("Please enter a valid number.");
-                    Console.WriteLine("Hand: " + game.Players[0].Hand.CardsToString());
-                    Console.Write("Select Cards 0-{0} To Discard: ", game.Players[0].Hand.Cards.Count - 1);
+                    Console.WriteLine("Hand: " + player.Hand.CardsToString());
+                    Console.Write("Select Cards 0-{0} To Discard: ", player.Hand.Cards.Count - 1);
 
                 }
 

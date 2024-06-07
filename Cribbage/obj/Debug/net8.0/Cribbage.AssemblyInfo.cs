@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cribbage")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2673b9459a42c570edc9834868dcc75b09a7199e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce477dfcd9811edb5bd20d533a574a47a79276d7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cribbage")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cribbage")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
