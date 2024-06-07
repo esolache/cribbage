@@ -9,32 +9,37 @@ namespace ProgramNamespace
     {
         public static void MainLoop()
         {
+            // BUG: when multiple non-computer players
+            // discard to crib is broken
             CribbagePlayer player1 = new CribbagePlayer("Edwin", false);
-            CribbagePlayer player2 = new CribbagePlayer("Al", true);
+            CribbagePlayer player2 = new CribbagePlayer("Al", false);
+            CribbagePlayer player3 = new CribbagePlayer("Macey", false);
             player1.NextPlayer = player2;
-            player2.NextPlayer = player1;
+            player2.NextPlayer = player3;
+            player3.NextPlayer = player1;
 
             List<CribbagePlayer> players = new List<CribbagePlayer>();
             players.Add(player1);
             players.Add(player2);
+            players.Add(player3);
 
 
             CribbageGame game = new CribbageGame(players);
             
-            while (game.Players[0].Points < 120 || game.Players[1].Points < 120) {
+            while (game.Winner() == null) {
                 Cribbage.SetUp(ref game);
                 Console.WriteLine(game.PlayerPointsToString());
 
-                // Select Cards to Discard to Crib
-                Cribbage.UserSelectCardForCrib(ref game);
-                Cribbage.UserSelectCardForCrib(ref game);
+                Cribbage.CreateCrib(ref game);
                 
-                // Computer Discard To Crib
-                Cribbage.ComputerSelectCardForCrib(ref game);
-                
+                Console.WriteLine(game.Crib.CardsToString());
+
                 if (game.PullCard().CardValue == CardValue.Jack) {
                     game.Dealer.Points += 2;
                 }
+
+                Console.WriteLine(game.Crib.CardsToString());
+
 
                 Cribbage.PlayLoop(ref game);
 
@@ -111,6 +116,7 @@ namespace ProgramNamespace
                         }
                     }
                     else {
+                        // BUG: Go is kind of messed up
                         Console.WriteLine("Go! " + currPlayer.Name);
                     }
 
@@ -206,12 +212,35 @@ namespace ProgramNamespace
             return;
         }
 
-        public static void ComputerSelectCardForCrib(ref CribbageGame game) {
-            game.AddCardToCrib(game.Players[1].Hand.Cards[0]);
-            game.AddCardToCrib(game.Players[1].Hand.Cards[0]);
+        public static void CreateCrib(ref CribbageGame game) {
+            foreach (CribbagePlayer player in game.Players) {
+                    Cribbage.SelectCardForCrib(ref game, player);
+
+                    if (game.NumPlayers == 2) {
+                        Cribbage.SelectCardForCrib(ref game, player);
+                    }
+                }
+
+                if (game.NumPlayers == 3) {
+                    game.AddCardToCrib(game.Deck.Cards[0]);
+                }
+            return;
         }
 
-        public static void UserSelectCardForCrib(ref CribbageGame game) {
+        public static void SelectCardForCrib(ref CribbageGame game, CribbagePlayer player) {
+            if (player.IsComputer) {
+                ComputerSelectCardForCrib(ref game, ref player);
+            }
+            else {
+                UserSelectCardForCrib(ref game, ref player);
+            }
+        }
+
+        public static void ComputerSelectCardForCrib(ref CribbageGame game, ref CribbagePlayer player) {
+            game.AddCardToCrib(player.Hand.Cards[0]);
+        }
+
+        public static void UserSelectCardForCrib(ref CribbageGame game, ref CribbagePlayer player) {
             PokerCard result;
 
             Console.WriteLine("Hand: " + game.Players[0].Hand.CardsToString());

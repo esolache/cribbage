@@ -2,6 +2,9 @@ namespace Models {
     class CribbageGame {
 
         public List<CribbagePlayer> Players {get; set;}
+        public int NumPlayers { get {
+            return this.Players.Count;
+        }}
         public CribbagePlayer CurrPlayer {get; set;}
         public CribbagePlayer Dealer {get; set;}
         public PokerCard? Pull {get; set;}
@@ -28,13 +31,25 @@ namespace Models {
         }
 
         public void Deal() {
-            foreach (CribbagePlayer currPlayer in this.Players) {
-                List<PokerCard> cards = this.Deck.Cards[0..6];
-                foreach (PokerCard card in cards) {
-                    this.Deck.RemoveCard(card);
-                    currPlayer.Hand.AddCard(card);
+            if ( this.NumPlayers == 2 ) {
+                foreach (CribbagePlayer currPlayer in this.Players) {
+                    List<PokerCard> cards = this.Deck.Cards[0..6];
+                    foreach (PokerCard card in cards) {
+                        this.Deck.RemoveCard(card);
+                        currPlayer.Hand.AddCard(card);
+                    }
                 }
             }
+            else if (this.NumPlayers == 3) {
+                foreach (CribbagePlayer currPlayer in this.Players) {
+                    List<PokerCard> cards = this.Deck.Cards[0..5];
+                    foreach (PokerCard card in cards) {
+                        this.Deck.RemoveCard(card);
+                        currPlayer.Hand.AddCard(card);
+                    }
+                }
+            }
+            
         }
 
         public void NewRound() {
@@ -61,6 +76,7 @@ namespace Models {
 
         public void AddCardToCrib(PokerCard card) {
             this.Crib.AddCard(card);
+            this.Deck.RemoveCard(card);
             foreach(CribbagePlayer player in this.Players) {
                 player.Hand.RemoveCard(card);
             }
@@ -90,6 +106,17 @@ namespace Models {
             foreach(CribbagePlayer player in this.Players) {
                 player.Hand.RemoveCard(card);
             }
+        }
+        
+        // null if game is not over
+        public CribbagePlayer? Winner() {
+            foreach (CribbagePlayer player in this.Players) {
+                if (player.Points > 120) {
+                    return player;
+                }
+            }
+
+            return null;
         }
 
         public override string ToString()

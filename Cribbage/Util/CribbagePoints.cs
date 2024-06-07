@@ -57,7 +57,7 @@ namespace Util {
             bool result =  (int) temp[0].CardValue == (int) temp[1].CardValue - 1
                         && (int) temp[1].CardValue == (int) temp[2].CardValue - 1
                         && (int) temp[2].CardValue == (int) temp[3].CardValue - 1
-                        && (int) temp[4].CardValue == (int) temp[5].CardValue - 1;
+                        && (int) temp[3].CardValue == (int) temp[4].CardValue - 1;
 
 
             if (print && result) {
