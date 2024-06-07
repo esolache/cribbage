@@ -34,26 +34,29 @@ namespace Models {
             bool isDouble = false;
 
             if (this.Sum == 15) {
+                Console.WriteLine("15 for 2!");
                 result += 2;
             }
-            else if (this.Sum == 31) {
-                result += 1;
+            
+            if (this.Sum == 31) {
+                Console.WriteLine("31 for 2!");
+                result += 2;
             }
 
             if (numCards > 4) {
                 isFlushOfFive = CribbagePoints.IsRunOfFive(this.Cards[(numCards-5)..(numCards)]);
                 isRunOfFive = CribbagePoints.IsRunOfFive(this.Cards[(numCards-5)..(numCards)]);
             }
-            else if (numCards > 3) {
+            if (numCards > 3) {
                 isRunOfFour = CribbagePoints.IsRunOfFour(this.Cards[(numCards-4)..(numCards)]);
                 isFlushOfFour = CribbagePoints.IsFlushOfFour(this.Cards[(numCards-4)..(numCards)]);
                 isQuadruple = CribbagePoints.IsQuadruple(this.Cards[(numCards-4)..(numCards)]);
             }
-            else if (numCards > 2) {
+            if (numCards > 2) {
                 isRunOfThree = CribbagePoints.IsRunOfThree(this.Cards[(numCards-3)..(numCards)]);
                 isTriple = CribbagePoints.IsTriple(this.Cards[(numCards-3)..(numCards)]);
             }
-            else if (numCards > 1) {
+            if (numCards > 1) {
                 isDouble = CribbagePoints.IsDouble(this.Cards[(numCards-2)..(numCards)]);
             }
 

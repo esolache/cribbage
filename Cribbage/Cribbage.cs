@@ -23,7 +23,7 @@ namespace ProgramNamespace
             
             while (game.Players[0].Points < 120 || game.Players[1].Points < 120) {
                 Cribbage.SetUp(ref game);
-                Console.WriteLine(game.GameOverviewToString());
+                Console.WriteLine(game.PlayerPointsToString());
 
                 // Print Hand
                 Console.WriteLine((game.Players[0].Hand.HandToString()));
@@ -36,23 +36,18 @@ namespace ProgramNamespace
                 // Computer Discard To Crib
                 Cribbage.ComputerSelectCardForCrib(ref game);
                 
-                
-                Console.WriteLine(game.Crib.ToString());
-
-                
                 if (game.PullCard().CardValue == CardValue.Jack) {
                     game.Dealer.Points += 2;
                 }
 
                 Cribbage.PlayLoop(ref game);
 
-                
-
                 Console.WriteLine(game.ToString());
 
                 Cribbage.TallyPoints(ref game);
 
                 game.Dealer = game.Dealer.NextPlayer;
+                game.CurrPlayer = game.Dealer.NextPlayer;
             }
 
 
@@ -112,18 +107,20 @@ namespace ProgramNamespace
                         // user turn
                         else {
                             Cribbage.UserSelectCardToPlay(ref game, ref currPlayer);
+                        }
 
+                        if (!Cribbage.CardsActive(game)) {
+                            Console.WriteLine("Last Card! " + currPlayer.Name);
+                            currPlayer.Points++;
                         }
                     }
                     else {
                         Console.WriteLine("Go! " + currPlayer.Name);
                     }
 
-                    if (!Cribbage.CardsActive(game)) {
-                        Console.WriteLine("Last Card! " + currPlayer.Name);
-                        game.CurrPlayer.Points++;
-                    }
                     currPlayer = currPlayer.NextPlayer;
+
+                    Console.WriteLine(game.PlayerPointsToString());
                     Console.WriteLine(game.GetActivePlay().ToString());
                 }
                 game.Plays.Add(new CribbagePlay());
@@ -141,8 +138,11 @@ namespace ProgramNamespace
 
         public static void TallyPoints(ref CribbageGame game) {
             foreach (CribbagePlayer player in game.Players) {
+                Console.WriteLine("{0} Hand Worth {1} Points", player.Name, player.Hand.Points);
                 player.Points += player.Hand.Points;
             }
+
+            Console.WriteLine("Crib Worth {0} Points", game.Crib.Points);
             game.Dealer.Points += game.Crib.Points;
             
             return;

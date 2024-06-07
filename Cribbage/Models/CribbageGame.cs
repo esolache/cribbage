@@ -107,7 +107,7 @@ namespace Models {
             return result;
         }
 
-        public string GameOverviewToString() {
+        public string PlayerPointsToString() {
             string result = "";
             foreach (CribbagePlayer player in this.Players) {
                 result += String.Format("Name: {0}\n Points: {1}\n",player.Name, player.Points);
